@@ -13,18 +13,7 @@ GUILD = os.getenv('DISCORD_GUILD')
 intents = discord.Intents.default()
 intents.members = True
 
-client = discord.Client(intents=intents)
-
-
-@client.event
-async def on_message(message):
-    if 'happy birthday' in message.content.lower():
-        if message.author == client.user:
-            return
-        else:
-            await message.channel.send('Happy Birthday! 🎈🎉')
-    
-
+client = discord.Client(intents=intents)    
 
 @client.event
 async def on_ready():
@@ -33,18 +22,18 @@ async def on_ready():
         f'{client.user} is connected to the following guild:\n'
         f'{guild.name}(id: {guild.id})'    
         )
-    
-
     members = '\n - '.join([member.name for member in guild.members])
     print(f'Guild Members:\n - {members}')
+
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content == "raise-exception":
+    elif message.content == "raise-exception":
         raise discord.DiscordException
     
-    
+    elif 'happy birthday' in message.content.lower():
+        await message.channel.send('Happy Birthday! 🎈🎉')
 client.run(TOKEN)
