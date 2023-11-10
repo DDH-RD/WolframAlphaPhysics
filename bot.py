@@ -36,4 +36,17 @@ async def on_message(message):
     
     elif 'happy birthday' in message.content.lower():
         await message.channel.send('Happy Birthday! 🎈🎉')
+
+@client.event
+async def on_error(event, *args, **kwargs):
+    with open("err.log", "a") as f:
+        if event == "on_message":
+            f.write(f"Unhandled message: {args[0]}\n")
+        else:
+            raise
+path = r"C:\Users\DannyBehr\Documents\WolframAlphaPhysics\err.log"
+assert os.path.isfile(path)
+with open(path, "r") as f:
+    pass
+
 client.run(TOKEN)
