@@ -1,10 +1,9 @@
 #WolframAlphaBot.py
 #A bot that uses the Wolfram Alpha API to answer questions
 import os
-from weakref import ref
 import discord
 from dotenv import load_dotenv
-from pip import main
+from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -13,7 +12,8 @@ GUILD = os.getenv('DISCORD_GUILD')
 intents = discord.Intents.default()
 intents.members = True
 
-client = discord.Client(intents=intents)    
+client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix="/")
 
 @client.event
 async def on_ready():
@@ -26,7 +26,7 @@ async def on_ready():
     print(f'Guild Members:\n - {members}')
 
 
-@client.event
+@bot.command(name="happy birthday")
 async def on_message(message):
     if message.author == client.user:
         return
@@ -37,7 +37,7 @@ async def on_message(message):
     elif 'happy birthday' in message.content.lower():
         await message.channel.send('Happy Birthday! 🎈🎉')
 
-@client.event
+@bot.event
 async def on_error(event, *args, **kwargs):
     with open("err.log", "a") as f:
         if event == "on_message":
@@ -50,3 +50,4 @@ with open(path, "r") as f:
     pass
 
 client.run(TOKEN)
+bot.run(TOKEN)
